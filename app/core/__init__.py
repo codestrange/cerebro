@@ -7,8 +7,8 @@ def process(message):
 
     Arguments:
         message {tuple} -- Tupla de tres elementos. Conteniendo
-        en este orden: etiqueta del módulo procedente, texto del
-        mensaje y lista de etiquetas.
+        en este orden: etiqueta del módulo procedente, id del
+        mensaje y lista de etiquetas del mensaje.
     """
     pass
 
@@ -17,8 +17,8 @@ def get_message():
 
     Returns:
         tuple -- Tupla de tres elementos. Conteniendo
-        en este orden: etiqueta del módulo procedente, texto del
-        mensaje y lista de etiquetas.
+        en este orden: etiqueta del módulo procedente, id del
+        mensaje y lista de etiquetas del mensaje.
     """
     return None
 
@@ -27,8 +27,8 @@ def put_message(message):
 
     Arguments:
         message {tuple} -- Tupla de tres elementos. Conteniendo
-        en este orden: etiqueta del módulo procedente, texto del
-        mensaje y lista de etiquetas.
+        en este orden: etiqueta del módulo procedente, id del
+        mensaje y lista de etiquetas del mensaje.
     """
     pass
 
