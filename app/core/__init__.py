@@ -1,10 +1,22 @@
 from json import dumps
+from queue import Queue, Empty, Full
+from time import sleep
+from logging import debug, error
 from requests.api import post
+from requests.exceptions import ConnectionError
 from .config import get_config
 from ..models import Message
 
 config = get_config()
+queue = Queue()
 
+# El módulo dummy_threading.threading provee una interfaz igual a la del módulo
+# threading porque threading utilizá el módulo _thread y este no es provisto por
+# todas las plataformas.
+try:
+    from threading import Thread
+except ImportError:
+    from dummy_threading.threading import Thread
 
 def process(message):
     """Actualizar la base de datos de los mensajes y buscar en el
@@ -49,7 +61,11 @@ def process(message):
         if transition.query(tags_message):
             # Realizar POST a la url
             obj = {'id': id_message, 'text': text_message, 'tags': tags_message}
-            post(url_next_module, json=dumps(obj))
+            try:
+                post(url_next_module, json=dumps(obj))
+            except ConnectionError:
+                error('No se pudo establecer la conexión con el módulo "{0}" con la url: "{1}"'
+                      .format(transition.next_module, url_next_module))
 
 
 def get_message():
@@ -60,7 +76,13 @@ def get_message():
         en este orden: etiqueta del módulo procedente, id del
         mensaje y lista de etiquetas del mensaje.
     """
-    return None
+    debug('Obteniendo mensaje ...')
+    try:
+        message = queue.get(timeout=1)
+        debug('Procesando mensaje ...')
+        process(message)
+    except Empty:
+        error('Cola sin mensajes ...')
 
 
 def put_message(message):
@@ -71,7 +93,11 @@ def put_message(message):
         en este orden: etiqueta del módulo procedente, id del
         mensaje y lista de etiquetas del mensaje.
     """
-    pass
+    debug('Insertando mensaje ...')
+    try:
+        queue.put(message)
+    except Full:
+        error('Cola completamente llena ...')
 
 
 # Hay que hacer este metodo asincrónico
@@ -79,4 +105,7 @@ def start_core():
     """Controla el proceso de perdir los mensajes de la cola de
     mensajes a procesar y procesarlos.
     """
-    pass
+    while True:
+        sleep(1)
+        thread_get = Thread(target=get_message)
+        thread_get.start()

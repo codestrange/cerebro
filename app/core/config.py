@@ -1,15 +1,11 @@
 _config = {
-    'etiqueta_modulo': {
-        'url': 'http://www.example.com',
-        'tags': ['Tag1', 'Tag2'],
+    'public': {
+        'url': 'http://127.0.0.1:3000/',
+        'tags': [],
         'transitions': [
             {
                 'query': lambda tags_list: True,
-                'next_module': 'proxima_etiqueta_modulo1'
-            },
-            {
-                'query': lambda tags_list: False,
-                'next_module': 'proxima_etiqueta_modulo2'
+                'next_module': 'public'
             }
         ]
     }
