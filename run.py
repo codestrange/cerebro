@@ -1,7 +1,7 @@
 from os import getenv
 from app import create_app
 from app.models import db
-from core import start_core
+from app.core import start_core
 
 app = create_app(getenv('FLASK_CONFIG') or 'default')
 start_core()
