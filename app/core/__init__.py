@@ -82,7 +82,7 @@ def get_message():
         debug('Procesando mensaje ...')
         process(message)
     except Empty:
-        error('Cola sin mensajes ...')
+        debug('Cola sin mensajes ...')
 
 
 def put_message(message):
@@ -97,7 +97,7 @@ def put_message(message):
     try:
         queue.put(message)
     except Full:
-        error('Cola completamente llena ...')
+        debug('Cola completamente llena ...')
 
 
 # Hay que hacer este metodo asincrónico
