@@ -1,3 +1,4 @@
+from json import loads
 from flask import jsonify, request
 from . import api
 from ..core import put_message
@@ -19,11 +20,12 @@ def index():
 
 @api.route('/message', methods=['POST'])
 def new_message():
-    json = request.json
+    json = loads(request.json)
+    module = json['module']
     message = Message()
     message.text = json['text']
     message.tags = json['tags']
     message.save()
-    thread = Thread(target=put_message, args=(('public', message.id, message.tags), ))
+    thread = Thread(target=put_message, args=((module, message.id, message.tags), ))
     thread.start()
     return jsonify({'id': str(message.id)})
