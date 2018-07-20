@@ -60,7 +60,7 @@ def process(message):
         # la transición (si retorna False no se puede)
         if transition.query(tags_message):
             # Realizar POST a la url
-            obj = {'id': id_message, 'text': text_message, 'tags': tags_message}
+            obj = {'id': str(id_message), 'text': text_message, 'tags': tags_message}
             try:
                 post(url_next_module, json=dumps(obj))
             except ConnectionError:

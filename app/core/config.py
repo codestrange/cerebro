@@ -1,7 +1,7 @@
 _config = {
     'public': {
         'url': 'http://127.0.0.1:3000/',
-        'tags': [],
+        'tags': ['public'],
         'transitions': [
             {
                 'query': lambda tags_list: True,
@@ -24,7 +24,7 @@ class Transition(object):
     """
     def __init__(self, query, next_module):
         if not query or not next_module:
-            raise Exception('Ningún argumento puede ser nulo.')
+            raise Exception('Para Transition ningún argumento puede ser nulo.')
         self.query = query
         self.next_module = next_module
 
@@ -42,7 +42,7 @@ class Module(object):
     """
     def __init__(self, url, tags, transitions):
         if not url or not tags or not transitions:
-            raise Exception('Ningún argumento puede ser nulo.')
+            raise Exception('Para Module ningún argumento puede ser nulo.')
         self.url = url
         self.tags = tags
         self.transitions = transitions
