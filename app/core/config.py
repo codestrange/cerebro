@@ -1,13 +1,18 @@
 _config = {
-    'public': {
-        'url': 'http://127.0.0.1:3000/',
-        'tags': ['public'],
+    'frontend': {
+        'url': 'http://localhost:8080/',
+        'tags': ['frontend'],
         'transitions': [
             {
-                'query': lambda tags_list: True,
-                'next_module': 'public'
+                'query': lambda tags: True,
+                'next_module': 'inbox'
             }
         ]
+    },
+    'inbox': {
+        'url': 'http://localhost:3000/',
+        'tags': ['inbox'],
+        'transitions': []
     }
 }
 
@@ -15,15 +20,15 @@ _config = {
 class Transition(object):
     """Clase para facilitar la utilizacion de un diccionario de la forma:
     {
-        'query': lambda tags_list: False,
-        'next_module': 'proxima_etiqueta_modulo2'
+        'query': lambda tags: True,
+        'next_module': 'proxima_etiqueta_modulo'
     }
 
     Raises:
         Exception -- Lanza una excepción si algún argumento es nulo
     """
     def __init__(self, query, next_module):
-        if not query or not next_module:
+        if query is None or next_module is None:
             raise Exception('Para Transition ningún argumento puede ser nulo.')
         self.query = query
         self.next_module = next_module
@@ -41,7 +46,7 @@ class Module(object):
         Exception -- Lanza una excepción si algún argumento es nulo
     """
     def __init__(self, url, tags, transitions):
-        if not url or not tags or not transitions:
+        if url is None or tags is None or transitions is None:
             raise Exception('Para Module ningún argumento puede ser nulo.')
         self.url = url
         self.tags = tags
