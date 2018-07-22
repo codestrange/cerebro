@@ -6,9 +6,9 @@ Celebro es el núcleo de la aplicación de control de flujo y filtrado de mensaj
 
 ## Configuración
 
-Para configurar el flujo y filtrado de mensajes solo tiene que modificar el archivo `app/core/config.py`, en el archivo se encuentra un diccionario llamado `_config` con la siguiente extructura:
+Para configurar el flujo y filtrado de mensajes solo tiene que modificar el archivo `app/core/config.py`, en él se encuentra un diccionario llamado `_config` con la siguiente estructura:
 
-```[python3]
+```python
 _config = {
     'etiqueta_del_modulo': {
         'url': 'http://www.example.com/',
@@ -27,4 +27,4 @@ Luego de editado el diccionario guarde el archivo y listo, ya puede iniciar el s
 
 ## Notas de la versión
 
-Esta versión esta basada en hilos o threads utilizando los módulos threading y dummy_threading.threading.
+Esta versión esta basada en hilos o threads utilizando los módulos dummy_threading.threading y threading.
