@@ -14,6 +14,9 @@ shell:
 	export FLASK_APP=run.py &&\
 	flask shell
 
+ishell:
+	python run.py shell
+
 test:
 	export FLASK_APP=run.py &&\
 	flask test
