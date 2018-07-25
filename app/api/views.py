@@ -1,4 +1,5 @@
 from json import loads
+from logging import error
 from flask import jsonify, request
 from . import api
 from ..core import put_message
@@ -21,11 +22,15 @@ def index():
 @api.route('/message', methods=['POST'])
 def new_message():
     json = loads(request.json)
-    module = json['module']
-    message = Message()
-    message.text = json['text']
-    message.tags = json['tags']
+    module = json.get('module')
+    text = json.get('text')
+    tags = json.get('tags')
+    # Comprobar si el json recibido es correcto
+    if None in (module, text, tags):
+        error('Nuevo mensaje sin "module", "text" o "tags".')
+        return jsonify({'error': 'module, text and tags are required'}), 400
+    message = Message(text=text, tags=tags)
     message.save()
     thread = Thread(target=put_message, args=((module, message.id, message.tags), ))
     thread.start()
-    return jsonify({'id': str(message.id)})
+    return jsonify({'id': str(message.id)}), 201

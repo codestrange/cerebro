@@ -28,16 +28,20 @@ def process(message):
         en este orden: etiqueta del módulo procedente, id del
         mensaje y lista de etiquetas del mensaje.
     """
-    prev_module = message[0]
-    id_message = message[1]
-    tags_message = message[2]
+    try:
+        prev_module = message[0]
+        id_message = message[1]
+        tags_message = message[2]
+    except IndexError:
+        # Lanzar excepción si la tupla message no tiene 3 elementos
+        error('La tupla "message" pasada como argumento no tiene 3 elementos.')
 
     try:
         # Obtener mensaje de la base de datos con el id = id_message
         message = Message.objects.get(id=id_message)
-    except:
+    except Exception:
         # Lanzar excepción si no se encontró el mensaje en la base de datos
-        raise Exception(f'No existe el mensaje con el id {id_message} en la base de datos.')
+        error(f'El mensaje con id={id_message} no existe en la base de datos.')
 
     # Guardar en la base de datos las nuevas etiquetas del mensaje
     for tag in tags_message:
@@ -48,13 +52,20 @@ def process(message):
     text_message = message.text
 
     # Obtener el modulo en la configuración
-    prev_module = config[prev_module]
+    try:
+        prev_module = config[prev_module]
+    except KeyError:
+        error(f'No existe el módulo {prev_module} en el archivo de configuración.')
 
     # Revizar que transiciones se pueden realizar y hacerlas
     for transition in prev_module.transitions:
         # url es la dirección a la que hay que hacerle POST
         # si la transición se debe realizar
-        url_next_module = config[transition.next_module].url
+        try:
+            url_next_module = config[transition.next_module].url
+        except KeyError:
+            error('No existe el módulo {0} en el archivo de configuración.'
+                  .format(transition.next_module))
         # query es una expresión lamda que resive como parámetro
         # la lista de etiquetas y retorna True si se puede hacer
         # la transición (si retorna False no se puede)

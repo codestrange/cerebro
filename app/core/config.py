@@ -16,6 +16,8 @@ _config = {
     }
 }
 
+from logging import error
+
 
 class Transition(object):
     """Clase para facilitar la utilizacion de un diccionario de la forma:
@@ -23,13 +25,10 @@ class Transition(object):
         'query': lambda tags: True,
         'next_module': 'proxima_etiqueta_modulo'
     }
-
-    Raises:
-        Exception -- Lanza una excepción si algún argumento es nulo
     """
     def __init__(self, query, next_module):
-        if query is None or next_module is None:
-            raise Exception('Para Transition ningún argumento puede ser nulo.')
+        if None in (query, next_module):
+            error('Para "Transition" ningún argumento puede ser nulo.')
         self.query = query
         self.next_module = next_module
 
@@ -41,13 +40,10 @@ class Module(object):
         'tags': ['Tag1', 'Tag2'],
         'transitions': [...]
     }
-
-    Raises:
-        Exception -- Lanza una excepción si algún argumento es nulo
     """
     def __init__(self, url, tags, transitions):
-        if url is None or tags is None or transitions is None:
-            raise Exception('Para Module ningún argumento puede ser nulo.')
+        if None in (url, tags, transitions):
+            error('Para "Module" ningún argumento puede ser nulo.')
         self.url = url
         self.tags = tags
         self.transitions = transitions
@@ -63,12 +59,21 @@ def get_config():
     new_config = {}
     for key in _config:
         _module = _config[key]
-        url = _module['url']
-        tags = _module['tags']
+        try:
+            url = _module['url']
+            tags = _module['tags']
+            _transitions = _module['transitions']
+        except KeyError:
+            error(f'El modulo {_module} no tiene "url", "tags" o \
+                  "transitions".')
         transitions = []
-        for _transitions in _module['transitions']:
-            _query = _transitions['query']
-            _next_module = _transitions['next_module']
+        for _transition in _transitions:
+            try:
+                _query = _transition['query']
+                _next_module = _transition['next_module']
+            except KeyError:
+                error(f'El módulo {_module} tiene una transición \
+                      sin "query" o "next_module".')
             transition = Transition(_query, _next_module)
             transitions.append(transition)
         module = Module(url, tags, transitions)
