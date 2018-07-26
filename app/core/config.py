@@ -5,6 +5,40 @@ _config = {
         'transitions': [
             {
                 'query': lambda tags: True,
+                'next_module': 'greaterA'
+            }
+        ]
+    },
+    'greaterA': {
+        'url': 'http://localhost:3010/',
+        'tags': ['greaterA', 'A'],
+        'transitions': [
+            {
+                'query': lambda tags: 'A' in tags,
+                'next_module': 'evenA'
+            },
+            {
+                'query': lambda tags: 'A' not in tags,
+                'next_module': 'evenB'
+            }
+        ]
+    },
+    'evenA': {
+        'url': 'http://localhost:3030/',
+        'tags': ['evenA', 'leerA'],
+        'transitions': [
+            {
+                'query': lambda tags: 'leerA' in tags,
+                'next_module': 'inbox'
+            }
+        ]
+    },
+    'evenB': {
+        'url': 'http://localhost:3020/',
+        'tags': ['evenB', 'leerB'],
+        'transitions': [
+            {
+                'query': lambda tags: 'leerB' in tags,
                 'next_module': 'inbox'
             }
         ]
