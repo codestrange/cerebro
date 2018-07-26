@@ -49,7 +49,7 @@ def incoming_message():
     message_id = json.get('id')
     # Comprobar si el json recibido es correcto
     if None in (module, text, tags, message_id):
-        error('Nuevo mensaje sin "id", module", "text" o "tags".')
+        error('Mensaje sin "id", module", "text" o "tags".')
         return jsonify({'error': 'id, module, text and tags are required'}), 400
     send_to_core(module, message_id, tags)
     return jsonify({'id': str(message_id)}), 201
