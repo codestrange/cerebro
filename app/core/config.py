@@ -50,7 +50,7 @@ class Module(object):
 
 
 def get_config():
-    """Devolver un diccionario en el que los varlos son
+    """Devolver un diccionario en el que los valores son
     de tipo Module
 
     Returns:
