@@ -36,7 +36,7 @@ def new_message():
         return jsonify({'error': 'module, text and tags are required'}), 400
     message = Message(text=text, tags=tags)
     message.save()
-    send_to_core('public', message.id, message.tags)
+    send_to_core(module, message.id, message.tags)
     return jsonify({'id': str(message.id)}), 201
 
 
@@ -44,12 +44,11 @@ def new_message():
 def incoming_message():
     json = loads(request.json)
     module = json.get('module')
-    text = json.get('text')
     tags = json.get('tags')
     message_id = json.get('id')
     # Comprobar si el json recibido es correcto
-    if None in (module, text, tags, message_id):
-        error('Mensaje sin "id", module", "text" o "tags".')
-        return jsonify({'error': 'id, module, text and tags are required'}), 400
+    if None in (module, tags, message_id):
+        error('Mensaje sin "id", module" o "tags".')
+        return jsonify({'error': 'id, module and tags are required'}), 400
     send_to_core(module, message_id, tags)
     return jsonify({'id': str(message_id)}), 201
