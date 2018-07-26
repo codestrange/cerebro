@@ -1,8 +1,8 @@
-# Celebro v0.1
+# Cerebro v0.1
 
 ## Introducción
 
-Celebro es el núcleo de la aplicación de control de flujo y filtrado de mensajes del Proyecto Delta.
+Cerebro es el núcleo de la aplicación de control de flujo y filtrado de mensajes del Proyecto Delta.
 
 ## Configuración
 
