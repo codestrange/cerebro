@@ -92,3 +92,5 @@ _book
 *.mobi
 *.pdf
 
+# Folder tmp
+tmp
