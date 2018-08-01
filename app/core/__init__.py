@@ -18,6 +18,7 @@ try:
 except ImportError:
     from dummy_threading.threading import Thread
 
+
 def process(message):
     """Actualizar la base de datos de los mensajes y buscar en el
     diccionario de configuración el próximo módulo al que

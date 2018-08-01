@@ -14,9 +14,10 @@ try:
 except ImportError:
     from dummy_threading.threading import Thread
 
-# Corriendo el módulo core en un hilo independiente del de flask
+# Corriendo el módulo core en un hilo independiente al de flask
 core_thread = Thread(target=start_core)
 core_thread.start()
+
 
 @app.cli.command()
 def test():
@@ -24,6 +25,7 @@ def test():
     from unittest import TestLoader, TextTestRunner
     tests = TestLoader().discover('tests')
     TextTestRunner(verbosity=2).run(tests)
+
 
 @app.shell_context_processor
 def make_shell_context():

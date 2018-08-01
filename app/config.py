@@ -3,6 +3,7 @@ from os.path import abspath, dirname
 
 basedir = abspath(dirname(__file__))
 
+
 class Config(object):
     SECRET_KEY = getenv('SECRET_KEY') or 'secret_key'
 
@@ -14,14 +15,18 @@ class Config(object):
     def init_app(app):
         pass
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
+
 
 class TestingConfig(Config):
     TESTING = True
 
+
 class ProductionConfig(Config):
     pass
+
 
 config = {
     'development': DevelopmentConfig,

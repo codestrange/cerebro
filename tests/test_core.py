@@ -1,6 +1,7 @@
 from unittest import TestCase
 from app.core.config import _config, get_config
 
+
 class ConfigTestCase(TestCase):
     def setUp(self):
         self.config = get_config()
