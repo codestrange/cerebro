@@ -26,7 +26,7 @@ def index():
 
 @api.route('/new_message', methods=['POST'])
 def new_message():
-    json = loads(request.json)
+    json = loads(request.json) if isinstance(request.json, str) else request.json
     module = json.get('module')
     text = json.get('text')
     tags = json.get('tags')
@@ -42,7 +42,7 @@ def new_message():
 
 @api.route('/message', methods=['POST'])
 def incoming_message():
-    json = loads(request.json)
+    json = loads(request.json) if isinstance(request.json, str) else request.json
     module = json.get('module')
     tags = json.get('tags')
     message_id = json.get('id')
