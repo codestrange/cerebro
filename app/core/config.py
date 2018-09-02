@@ -53,42 +53,20 @@ _config = {
 from logging import error
 
 
-class Transition(object):
-    """Clase para facilitar la utilizacion de un diccionario de la forma:
-    {
-        'query': lambda tags: True,
-        'next_module': 'proxima_etiqueta_modulo'
-    }
-    """
-    def __init__(self, query, next_module):
-        if None in (query, next_module):
-            error('Para "Transition" ningún argumento puede ser nulo.')
-        self.query = query
-        self.next_module = next_module
+class AttributeDict(dict):
 
+    def __getattr__(self, name):
+        return self[name]
 
-class Module(object):
-    """Clase para facilitar la utilizacion de un diccionario de la forma:
-    {
-        'url': 'http://www.example.com',
-        'tags': ['Tag1', 'Tag2'],
-        'transitions': [...]
-    }
-    """
-    def __init__(self, url, tags, transitions):
-        if None in (url, tags, transitions):
-            error('Para "Module" ningún argumento puede ser nulo.')
-        self.url = url
-        self.tags = tags
-        self.transitions = transitions
+    def __setattr__(self, name, value):
+        self[name] = value
 
 
 def get_config():
-    """Devolver un diccionario en el que los valores son
-    de tipo Module
+    """Devolver un diccionario en el que las llaves son atributos.
 
     Returns:
-        dict -- Diccionario de la forma {key: instance of Module}
+        dict -- Diccionario
     """
     new_config = {}
     for key in _config:
@@ -108,8 +86,8 @@ def get_config():
             except KeyError:
                 error(f'El módulo {_module} tiene una transición \
                       sin "query" o "next_module".')
-            transition = Transition(_query, _next_module)
+            transition = AttributeDict(query=_query, next_module=_next_module)
             transitions.append(transition)
-        module = Module(url, tags, transitions)
+        module = AttributeDict(url=url, tags=tags, transitions=transitions)
         new_config[key] = module
     return new_config
