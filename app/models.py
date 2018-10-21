@@ -8,4 +8,4 @@ class Message(db.Document):
     tags = db.ListField(db.StringField())
 
     def __str__(self):
-        return str({'id': self.id, 'text': self.text, 'tags':self.tags})
+        return str({'id': self.id, 'text': self.text, 'tags': self.tags})
